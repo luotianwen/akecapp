@@ -1,0 +1,202 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页, 
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}, {
+		    "path" : "pages/main/main",
+		    "style" : {
+			   "navigationBarTitleText": "应用" 
+			}
+		},{
+			"path": "pages/baotai/list",
+			"style": {
+				"navigationBarTitleText": "已提交报台",
+				"enablePullDownRefresh": true
+			}
+		},{
+			"path": "pages/about/about",
+			"style": {
+				"navigationBarTitleText": "关于"
+			}
+		}, {
+			"path": "pages/doctor/list",
+			"style": {
+				"navigationBarTitleText": "医生",
+				"app-plus": {
+					"titleNView": false
+				},
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/study/list",
+			"style": {
+				"navigationBarTitleText": "学习"
+			}
+		},
+		{
+			"path": "pages/notice/list",
+			"style": {
+				"navigationBarTitleText": "通知"
+			}
+		},
+		{
+			"path": "pages/reg/reg",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		}, {
+			"path": "pages/pwd/pwd",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		}, {
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}, {
+			"path": "pages/doctor/add",
+			"style": {
+				"navigationBarTitleText": "添加医生"
+			}
+		}, {
+			"path": "pages/study/typelist",
+			"style": {
+				"navigationBarTitleText": "知识"
+			}
+		}, {
+			"path": "pages/study/detail",
+			"style": {}
+		}, {
+			"path": "pages/notice/detail",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/ywy/ywy",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				},
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/ywy/add",
+			"style": {
+				"navigationBarTitleText": "业务员"
+			}
+		}, {
+			"path": "pages/baotai/dlist",
+			"style": {
+				"navigationBarTitleText": "待提交报台"
+			}
+		}, {
+			"path": "pages/baotai/addbt",
+			"style": {
+				"navigationBarTitleText": "新增报台"
+			}
+		}
+
+		, {
+			"path": "pages/baotai/update",
+			"style": {
+				"navigationBarTitleText": "修改报台"
+			}
+		}, {
+			"path": "pages/baotai/updatebt",
+			"style": {
+				"navigationBarTitleText": "修改已提交报台"
+			}
+		}, {
+			"path": "pages/bs/bs",
+			"style": {
+				"navigationBarTitleText": "报数"
+			}
+		}, {
+			"path": "pages/bs/list",
+			"style": {
+				"navigationBarTitleText": "已提交报数列表",
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/bs/dlist",
+			"style": {
+				"navigationBarTitleText": "待提交报数列表",
+				"enablePullDownRefresh": true
+			}
+		}
+	    
+        ,{
+            "path" : "pages/main/data",
+            "style" : { 
+				"navigationBarTitleText": "数据" 
+			}
+        }
+        ,{
+            "path" : "pages/hospital/hospital",
+            "style" : {"navigationBarTitleText": "新增医院" }
+        }
+        ,{
+            "path" : "pages/hospital/list",
+            "style" : {
+				"app-plus": {
+					"titleNView": false
+				},
+				"navigationBarTitleText": "医院查询" 
+			}
+        }
+        ,{
+            "path" : "pages/baotai/geti",
+            "style" : {"navigationBarTitleText": "已报个体码查询" }
+        }
+        ,{
+            "path" : "pages/pwd/forget",
+            "style" : {"navigationBarTitleText": "忘记密码" }
+        }
+        
+        ,{
+            "path" : "pages/user/ys",
+            "style" :  {"navigationBarTitleText": "隐私政策与服务协议" }
+        }
+        ,{
+            "path" : "pages/user/zx",
+            "style" : {"navigationBarTitleText": "注销账户" }
+        }
+    ],
+	"tabBar": {
+		"color": "#7a7e83",
+		"selectedColor": "#0faeff",
+		"backgroundColor": "#ffffff",
+		"fontSize": "18px",
+
+		"list": [{
+			"pagePath": "pages/main/main",
+			"text": "应用",
+			"iconPath": "static/img/c3.png",
+			"selectedIconPath": "static/img/c3.png"
+		}, {
+			"pagePath": "pages/main/data",
+			"text": "数据",
+			"iconPath": "static/img/c1.png",
+			"selectedIconPath": "static/img/c1.png"
+		}, {
+			"pagePath": "pages/study/list",
+			"text": "学习",
+			"iconPath": "static/img/c2.png",
+			"selectedIconPath": "static/img/c2.png"
+		}, {
+			"pagePath": "pages/user/user",
+			"text": "我的",
+			"iconPath": "static/img/c4.png",
+			"selectedIconPath": "static/img/c4.png"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarBackgroundColor": "#0faeff",
+		"backgroundColor": "#fbf9fe"
+	}
+}
