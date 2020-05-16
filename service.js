@@ -1,5 +1,7 @@
- //const httpUrl = "http://192.168.5.164:8081/akec/";
-const httpUrl = "http://akbt.ak-medical.net/akec/";
+const Url = "https://akbt.ak-medical.net/";
+////const Url = "http://192.168.5.164:8081/";
+const httpUrl = Url+"akec/";
+
 const savereg = function() {
 	return httpUrl + "reg";
 }
@@ -60,6 +62,9 @@ const saveReportStandbook = function() {
 const getReportStandbook = function() {
 	return httpUrl + "getReportStandbook";
 }
+const delReportStandbook = function() {
+	return httpUrl + "delReportStandbook";
+}
 const queryListUnreadNotice = function() {
 	return httpUrl + "queryListUnreadNotice";
 }
@@ -108,6 +113,9 @@ const forgetUserPass = function() {
 const outUseroutUser = function() {
 	return httpUrl + "outUseroutUser";
 }
+const upload = function() {
+	return httpUrl + "upload";
+}
 
 // 管理账号信息
 const USERS_KEY = 'AKEC_KEY';
@@ -146,6 +154,7 @@ const addbaotai = function(bt) {
 }
 
 export default {
+	Url,
 	getUsers,
 	getbaotai,
 	addbaotai,
@@ -171,6 +180,7 @@ export default {
 	queryGradeList,
 	saveReportStandbook,
 	getReportStandbook,
+	delReportStandbook,
 	queryListUnreadNotice,
 	deleteNoticeUserRead,
 	exportListReportStandbook,
@@ -186,4 +196,5 @@ export default {
 	sendsms,
 	delReportStandbookOperation,
 	outUseroutUser,
+	upload,
 }

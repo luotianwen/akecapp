@@ -4,7 +4,7 @@
 		<view class="input-group">
 			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">手术日期：</text>
-				<picker class="pickerslect" mode="date" :value="operateDate" @change="bindoperateDateChange">
+				<picker class="pickerslect" mode="date" :start="startDate" :end="endDate"  :value="operateDate" @change="bindoperateDateChange">
 					<view class="pickertext">{{operateDate}}</view>
 				</picker>
 			</view>
@@ -81,7 +81,7 @@
 					<view class="uni-uploader">
 						<view class="uni-uploader-head">
 							<view class="uni-uploader-title">点击预览图片</view>
-							<view class="uni-uploader-info">{{phos.length}}/1</view>
+							<view class="uni-uploader-info">{{phos.length}}</view>
 						</view>
 						<view class="uni-uploader-body">
 							<view class="uni-uploader__files">
@@ -184,6 +184,14 @@
 			uniSection,
 			selectsearch,
 		},
+		computed: {
+		        startDate() {
+		            return this.getDate('start');
+		        },
+		        endDate() {
+		            return this.getDate('end');
+		        }
+		    },
 		data() {
 			 
 			return {
@@ -245,6 +253,19 @@
 			}
 		},
 		methods: {
+			getDate(type) {
+			           const date = new Date();
+			           let year = date.getFullYear();
+			           let month = date.getMonth() + 1;
+			           let day = date.getDate();
+						
+			           if (type === 'start') {
+			               year = year - 20;
+			           } 
+			           month = month > 9 ? month : '0' + month;;
+			           day = day > 9 ? day : '0' + day;
+			           return `${year}-${month}-${day}`;
+			       },
 			bindoperateDateChange: function(e) {
 				this.operateDate = e.target.value
 			},
@@ -326,7 +347,7 @@
 								 _this.hospitalName=d.hospitalName;
 								 _this.searchValue=d.hospitalName;
 								// _this.provicesvalue=[d.provinceCode,d.cityCode];
-								 //_this.phos=d.phos;
+								 
 								 _this.provicesname=d.provinceName+"-"+d.cityName;
 								 _this.surgeryGrade=d.surgeryGrade;
 								 
@@ -347,6 +368,11 @@
 									 }
 									 
 								});
+								 if(d.reportStandbookImageDetailList){
+									 d.reportStandbookImageDetailList.forEach((item,index)=>{
+									  _this.phos.push(item.reportImgUrl);
+									  });
+								 }
 								if(d.reportStandbookProductDetailList)
 								d.reportStandbookProductDetailList.forEach((item,index)=>{
 								 	 
@@ -578,39 +604,24 @@
 			chooseImage() {
 				var _this = this;
 				uni.chooseImage({
+					count:1,
 					sizeType: ['original'],
 					success: function(res) {
 						console.log(JSON.stringify(res.tempFilePaths));
 						var x;
-						var l = res.tempFilePaths.length;
-						console.log(l);
-						for (var j = 0; j < l; j++) {
-							x = res.tempFilePaths[j];
-
-							uni.compressImage({
-								src: x,
-								quality: 80,
-								success: res => {
-									console.log(res.tempFilePath)
-									//#ifdef APP-PLUS
-									plus.io.resolveLocalFileSystemURL(res.tempFilePath, function(entry) {
-										// 可通过entry对象操作test.html文件
-										entry.file(function(file) {
-											var fileReader = new plus.io.FileReader();
-											fileReader.readAsDataURL(file);
-											fileReader.onloadend = function(evt) {
-												console.log(evt.target.result)
-												_this.phos = _this.phos.concat(evt.target.result);
-
-
-											}
-										})
-									})
-									//#endif
-
-								}
-							})
-						}
+						var l = res.tempFilePaths;
+						 uni.uploadFile({
+						             url: service.upload(), //仅为示例，非真实的接口地址
+						             filePath: l[0],
+						             name: 'file',
+						             success: (uploadFileRes) => {
+						 					 console.log(uploadFileRes.data);
+						 					 var _da=JSON.parse(uploadFileRes.data)
+						 					 _this.phos.push(service.Url+_da.data);
+						                 
+						 									 
+						             }
+						         });
 
 					}
 				})

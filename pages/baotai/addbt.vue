@@ -4,7 +4,7 @@
 		<view class="input-group">
 			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">手术日期：</text>
-				<picker class="pickerslect" mode="date" :value="operateDate" @change="bindoperateDateChange">
+				<picker class="pickerslect" mode="date" :start="startDate" :end="endDate" :value="operateDate" @change="bindoperateDateChange">
 					<view class="pickertext">{{operateDate}}</view>
 				</picker>
 			</view>
@@ -14,32 +14,32 @@
 				<lb-picker ref="picker2" v-model="provicesvalue" mode="multiSelector" :list="provices" :level="2" @confirm="handleConfirm">
 				</lb-picker>
 			</view> -->
-			<view class="input-row border"  style="padding-top: 15rpx;">
+			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">选择医院：</text>
-				<selectsearch style="padding: 5px 0 0 0;" @handleSearch="handleSearch" @change="change" placeholder=" 请搜索医院" :infoList="infoList"
-				 :showValue="showValue" v-model="searchValue" :loading="loading" type="primary" :uniShadow="true"></selectsearch>
+				<selectsearch style="padding: 5px 0 0 0;" @handleSearch="handleSearch" @change="change" placeholder=" 请搜索医院"
+				 :infoList="infoList" :showValue="showValue" v-model="searchValue" :loading="loading" type="primary" :uniShadow="true"></selectsearch>
 				<!-- 	<label @click="chospital" class="uni-input"> {{hospitalName}}</label> -->
 			</view>
 
-			<view class="input-row border" style="padding-top: 15rpx;" >
+			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">医&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生：</text>
 				<uni-combox class="pickerslect" :candidates="doctors" placeholder="请选择医生" v-model="doctor"></uni-combox>
 
 			</view>
 
 
-			<view class="input-row border" style="padding-top: 15rpx;" >
+			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">手术类别：</text>
 				<picker class="pickerslect" @change="bindPickerChange" :value="index" :range="array" range-key="paramName">
 					<view class="pickertext">{{array[index].paramName}}</view>
 				</picker>
 			</view>
 
-			<view class="input-row border"  style="padding-top: 15rpx;">
+			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">患者年龄：</text>
 				<m-input type="text" class="pickertext" clearable v-model="name" placeholder="请输入年龄"></m-input>
 			</view>
-			<view class="input-row border"  style="padding-top: 15rpx;">
+			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">患者性别：</text>
 				<picker class="pickerslect" @change="bindsexChange" :value="sexindex" :range="sexs" range-key="paramName">
 					<view class="pickertext">{{sexs[sexindex].paramName}}</view>
@@ -55,14 +55,13 @@
 				<uni-list>
 					<block v-for="(tab,index1) in products" :key="index1">
 
-						<uni-card   note="1"
-						 :isShadow="isShadow">
+						<uni-card note="1" :isShadow="isShadow">
 							<text class="content-box-text">
-								产品类型:	{{tab.seriesName}}</br>
-								产品名称:	{{tab.materialDesc}} </br>
-							    产品型号:	{{tab.materialSpeDesc}}</br> 
-								物料编码:	{{tab.materialCode}}</br>
-								个&nbsp;&nbsp;体&nbsp;&nbsp;码:	{{tab.indivualcode}}</text>
+								产品类型: {{tab.seriesName}}</br>
+								产品名称: {{tab.materialDesc}} </br>
+								产品型号: {{tab.materialSpeDesc}}</br>
+								物料编码: {{tab.materialCode}}</br>
+								个&nbsp;&nbsp;体&nbsp;&nbsp;码: {{tab.indivualcode}}</text>
 							<block slot="footer">
 								<view class="footer-box">
 									<view class="" @click.stop="footerClick(tab,index1)"><text class="footer-box__item"> 删除</text></view>
@@ -82,7 +81,7 @@
 					<view class="uni-uploader">
 						<view class="uni-uploader-head">
 							<view class="uni-uploader-title">点击预览图片</view>
-							<view class="uni-uploader-info">{{phos.length}}/1</view>
+							<view class="uni-uploader-info">{{phos.length}}</view>
 						</view>
 						<view class="uni-uploader-body">
 							<view class="uni-uploader__files">
@@ -186,10 +185,16 @@
 			uniSection,
 			selectsearch,
 		},
+		computed: {
+		        startDate() {
+		            return this.getDate('start');
+		        },
+		        endDate() {
+		            return this.getDate('end');
+		        }
+		    },
 		data() {
-			const currentDate = this.getDate({
-				format: true
-			})
+			 
 			return {
 				operateDate: '选择日期',
 				provice: "",
@@ -244,6 +249,19 @@
 			this.queryGradeList();
 		},
 		methods: {
+			 getDate(type) {
+			            const date = new Date();
+			            let year = date.getFullYear();
+			            let month = date.getMonth() + 1;
+			            let day = date.getDate();
+			
+			            if (type === 'start') {
+			                year = year - 20;
+			            } 
+			            month = month > 9 ? month : '0' + month;;
+			            day = day > 9 ? day : '0' + day;
+			            return `${year}-${month}-${day}`;
+			        },
 			handleSearch() {
 				/* if(this.city.length==0){
 					uni.showToast({
@@ -274,6 +292,7 @@
 			                }, 1000)
 			            },
 				change(val){
+					console.log("change")
 					this.hosptail=val.name;
 					this.hospitalName=val.name;
 					this.provice=val.pname;
@@ -381,7 +400,7 @@
 					//170911生产日期
 					//220910 失效日期
 					var code=this.barCode;
-					if(code.length<47){
+					if(code.length<40){
 						uni.showToast({
 							title:"二维码不正确!"
 						})
@@ -481,39 +500,27 @@
 			chooseImage() {
 				var _this = this;
 				uni.chooseImage({
+					count:1,
 					sizeType: ['original'],
 					success: function(res) {
-						console.log(JSON.stringify(res.tempFilePaths));
+						
 						var x;
-						var l = res.tempFilePaths.length;
-						console.log(l);
-						for (var j = 0; j < l; j++) {
-							x = res.tempFilePaths[j];
-
-							uni.compressImage({
-								src: x,
-								quality: 80,
-								success: res => {
-									console.log(res.tempFilePath)
-									//#ifdef APP-PLUS
-									plus.io.resolveLocalFileSystemURL(res.tempFilePath, function(entry) {
-										// 可通过entry对象操作test.html文件
-										entry.file(function(file) {
-											var fileReader = new plus.io.FileReader();
-											fileReader.readAsDataURL(file);
-											fileReader.onloadend = function(evt) {
-												console.log(evt.target.result)
-												_this.phos = _this.phos.concat(evt.target.result);
-
-
-											}
-										})
-									})
-									//#endif
-
-								}
-							})
-						}
+						var l = res.tempFilePaths;
+						console.log(l[0]);
+						console.log(service.upload());
+						uni.uploadFile({
+						            url: service.upload(), 
+						            filePath: l[0],
+						            name: 'file',
+						            success: (uploadFileRes) => {
+											 
+											 var _da=JSON.parse(uploadFileRes.data)
+											 _this.phos.push(service.Url+_da.data);
+						                console.log(service.Url+_da.data);
+															 
+						            }
+						        });
+						 
 
 					}
 				})
@@ -578,15 +585,7 @@
 					}
 				})
 			},
-			getDate(type) {
-				const date = new Date();
-				let year = date.getFullYear();
-				let month = date.getMonth() + 1;
-				let day = date.getDate();
-				month = month > 9 ? month : '0' + month;;
-				day = day > 9 ? day : '0' + day;
-				return `${year}-${month}-${day}`;
-			},
+			 
 			bindPickerChange: function(e) {
 				console.log(this.array[e.target.value].id + 'picker发送选择改变，携带值为', e.target.value)
 				this.index = e.target.value;

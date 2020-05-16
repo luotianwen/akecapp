@@ -5,13 +5,13 @@
 				<view class="input-group">
 					<view class="input-row border" style="padding-top: 15rpx;">
 						<text class="title">开始日期：</text>
-						<picker class="pickerslect" mode="date" :value="beginOperateDate" @change="bindbeginDateChange">
+						<picker class="pickerslect" mode="date" :start="startDate" :end="endDate"  :value="beginOperateDate" @change="bindbeginDateChange">
 							<view class="pickertext">{{beginOperateDate}}</view>
 						</picker>
 					</view>
 					<view class="input-row border" style="padding-top: 15rpx;">
 						<text class="title">结束日期：</text>
-						<picker class="pickerslect" mode="date" :value="endOperateDate" @change="bindendDateChange">
+						<picker class="pickerslect" mode="date" :start="startDate" :end="endDate"  :value="endOperateDate" @change="bindendDateChange">
 							<view class="pickertext">{{endOperateDate}}</view>
 						</picker>
 					</view>
@@ -75,6 +75,19 @@
 		day = day > 9 ? day : '0' + day;
 		return `${year}-${month}-${day}`;
 	}
+	function getDate2(type) {
+	           const date = new Date();
+	           let year = date.getFullYear();
+	           let month = date.getMonth() + 1;
+	           let day = date.getDate();
+				
+	           if (type === 'start') {
+	               year = year - 20;
+	           } 
+	           month = month > 9 ? month : '0' + month;;
+	           day = day > 9 ? day : '0' + day;
+	           return `${year}-${month}-${day}`;
+	       } 
 	import uniFab from '@/components/uni-fab/uni-fab.vue'
 	import uniCard from '@/components/uni-card/uni-card.vue'
 	import uniCollapse from '@/components/uni-collapse/uni-collapse.vue'
@@ -94,9 +107,12 @@
 			uniCollapseItem,
 			mInput
 		},
+		 
 		data() {
 
 			return {
+				startDate: getDate2('start'),
+				endDate: getDate2('end'),
 				beginOperateDate: getDate('start'),
 				endOperateDate: getDate({
 					format: true
@@ -167,6 +183,7 @@
 			}, 1000);
 		},
 		methods: {
+			 
 			bindPickerChange: function(e) {
 				console.log(this.array[e.target.value].id + 'picker发送选择改变，携带值为', e.target.value)
 				this.index = e.target.value;

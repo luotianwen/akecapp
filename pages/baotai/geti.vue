@@ -97,7 +97,7 @@
 		onPullDownRefresh() {
 			console.log('refresh'); 
 			 
-			this.getData();
+			//this.getData();
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 1000);
@@ -105,6 +105,13 @@
 		methods: {
 			  
 			getData() {
+				if (this.individualcode.length ==0) {
+					uni.showToast({
+						icon: 'none',
+						title: '个体码必填'
+					});
+					return;
+				}
 				this.list=[];
 				uni.showLoading({
 					title: '加载中...'

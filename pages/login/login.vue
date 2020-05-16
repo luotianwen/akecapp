@@ -159,6 +159,14 @@
 					fail: (data, code) => {
 						console.log('fail' + JSON.stringify(data));
 						uni.hideLoading();
+						uni.showModal({
+							title: '登录失败',
+							content: '请求服务器失败，联系管理员',
+							showCancel: false,
+							success: function(res) {
+								 
+							}
+						});
 					}
 				})
 

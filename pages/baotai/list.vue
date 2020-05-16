@@ -5,13 +5,13 @@
 				<view class="input-group">
 					<view class="input-row border" style="padding-top: 15rpx;">
 						<text class="title">开始日期：</text>
-						<picker class="pickerslect" mode="date" :value="beginOperateDate" @change="bindbeginDateChange">
+						<picker class="pickerslect" mode="date" :start="startDate" :end="endDate"  :value="beginOperateDate" @change="bindbeginDateChange">
 							<view class="pickertext">{{beginOperateDate}}</view>
 						</picker>
 					</view>
 					<view class="input-row border" style="padding-top: 15rpx;">
 						<text class="title">结束日期：</text>
-						<picker class="pickerslect" mode="date" :value="endOperateDate" @change="bindendDateChange">
+						<picker class="pickerslect" mode="date" :start="startDate" :end="endDate"  :value="endOperateDate" @change="bindendDateChange">
 							<view class="pickertext">{{endOperateDate}}</view>
 						</picker>
 					</view>
@@ -53,6 +53,7 @@
 					<block slot="footer" v-if="tab.show">
 						<view class="footer-box" v-show="tab.show">
 							<view class="" @click.stop="onClick(tab)"><text class="footer-box__item"> 修改</text></view>
+							<view class="" @click.stop="footerClick(tab,index1)"><text class="footer-box__item"> 删除</text></view>
 						</view>
 					</block>
 				</uni-card>
@@ -79,6 +80,19 @@
 		day = day > 9 ? day : '0' + day;
 		return `${year}-${month}-${day}`;
 	}
+	function getDate2(type) {
+	           const date = new Date();
+	           let year = date.getFullYear();
+	           let month = date.getMonth() + 1;
+	           let day = date.getDate();
+				
+	           if (type === 'start') {
+	               year = year - 20;
+	           } 
+	           month = month > 9 ? month : '0' + month;;
+	           day = day > 9 ? day : '0' + day;
+	           return `${year}-${month}-${day}`;
+	       } 
 	import uniFab from '@/components/uni-fab/uni-fab.vue'
 	import uniCard from '@/components/uni-card/uni-card.vue'
 	import uniCollapse from '@/components/uni-collapse/uni-collapse.vue'
@@ -101,7 +115,10 @@
 		data() {
 
 			return {
+				startDate: getDate2('start'),
+				endDate: getDate2('end'),
 				beginOperateDate: getDate('start'),
+				
 				endOperateDate: getDate({
 					format: true
 				}),
@@ -166,6 +183,7 @@
 
 			}
 		},
+		 
 		onPullDownRefresh() {
 			console.log('refresh');
 
@@ -175,6 +193,7 @@
 			}, 1000);
 		},
 		methods: {
+			
 			bindPickerChange: function(e) {
 				console.log(this.array[e.target.value].id + 'picker发送选择改变，携带值为', e.target.value)
 				this.index = e.target.value;
@@ -278,6 +297,48 @@
 						uni.hideLoading();
 					}
 				})
+			},footerClick(tab,index) {
+				var _this=this;
+				console.log("index"+index); 
+				 uni.showModal({
+				 	title: "删除", 
+				 	content: '确定要删除第'+(index+1)+'条吗？',
+				 	success: (res) => {
+				 		if (res.confirm) {
+							uni.showLoading({
+								title: '删除中...'
+							});
+							uni.request({
+								url: service.delReportStandbook(),
+								data: data,
+								success: (data) => {
+									uni.hideLoading();
+									if (data.statusCode == 200 && data.data.code == 0) {
+										uni.showToast({
+											title: '操作成功',
+											duration: 3000,
+											success() {
+												 _this.getData();
+											}
+										})
+									} else {
+										uni.showToast({
+											title: data.data.msg
+										})
+									}
+										
+								},
+								fail: (data, code) => {
+									console.log('fail' + JSON.stringify(data));
+									uni.hideLoading();
+								}
+							})
+							 
+							
+				 		}
+				 	}
+				 			
+				 })
 			},
 			onClick(tab) {
 				console.log(tab.id);
