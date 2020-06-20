@@ -1,9 +1,9 @@
 {
-    "name" : "小李跟刀3",
+    "name" : "小李跟刀APP",
     "appid" : "__UNI__D3BBC05",
-    "description" : "小李跟刀3",
+    "description" : "小李跟刀APP",
     "versionName" : "3.0.4",
-    "versionCode" : 8,
+    "versionCode" : 9,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -130,7 +130,8 @@
     "h5" : {
         "uniStatistics" : {
             "enable" : false
-        }
+        },
+        "domain" : "akbt.ak-medical.net"
     },
     "mp-qq" : {
         "uniStatistics" : {

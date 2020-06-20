@@ -1,5 +1,5 @@
 const Url = "https://akbt.ak-medical.net/";
-////const Url = "http://192.168.5.164:8081/";
+//const Url = "http://192.168.2.124:8081/";
 const httpUrl = Url+"akec/";
 
 const savereg = function() {

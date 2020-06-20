@@ -239,10 +239,14 @@
 
 
 				var _this = this;
+				uni.showLoading({
+					title: '加载中...'
+				});
 				uni.downloadFile({
 					url: service.exportListReportStandbook() + data,
 					success: function(res) {
 						if (res.statusCode === 200) {
+							
 							console.log('下载成功');
 							var filePath = res.tempFilePath;
 							uni.showToast({
@@ -251,6 +255,7 @@
 							uni.openDocument({
 								filePath: filePath,
 								success: function(res) {
+									uni.hideLoading();
 									console.log(filePath + '打开文档成功');
 								},
 
