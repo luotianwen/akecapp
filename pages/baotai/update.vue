@@ -433,12 +433,12 @@
 							var valid=code.substring(34,code.length);
 							var f11=valid.substring(9,11);
 							 
-							if(f11.endsWith("21")){
+							/* if(f11.endsWith("21")){
 								this.indivualcode=valid.substring(0,9)+valid.substring(11,valid.length);
 							}
-							else{
+							else{ */
 								this.indivualcode=valid;
-							}
+							//}
 							 
 						 
 						 console.log("barCode="+data.barCode+"scanCode="+scanCode+" produceDate="+produceDate+" outdate="+outdate+" indivualcode="+this.indivualcode);
