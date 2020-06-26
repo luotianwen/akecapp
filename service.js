@@ -117,6 +117,19 @@ const upload = function() {
 	return httpUrl + "upload";
 }
 
+const queryListReportDStandbook = function() {
+	return httpUrl + "queryListReportDStandbook";
+}
+const saveReportDStandbook = function() {
+	return httpUrl + "saveReportDStandbook";
+}
+const getReportDStandbook = function() {
+	return httpUrl + "getReportDStandbook";
+}
+const delReportDStandbook = function() {
+	return httpUrl + "delReportDStandbook";
+}
+
 // 管理账号信息
 const USERS_KEY = 'AKEC_KEY';
  
@@ -197,4 +210,8 @@ export default {
 	delReportStandbookOperation,
 	outUseroutUser,
 	upload,
+	queryListReportDStandbook,
+	saveReportDStandbook,
+	getReportDStandbook,
+	delReportDStandbook,
 }

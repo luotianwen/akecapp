@@ -315,7 +315,7 @@
 							});
 							uni.request({
 								url: service.delReportStandbook(),
-								data: data,
+								data: {id:tab.id},
 								success: (data) => {
 									uni.hideLoading();
 									if (data.statusCode == 200 && data.data.code == 0) {

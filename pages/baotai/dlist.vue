@@ -1,73 +1,112 @@
 <template>
 	<view class="content">
-		 <uni-list>
-		 <block v-for="(tab,index1) in list" :key="index1">
-		 
-		 		<uni-card :title="'手术日期:'+tab.operateDate" :note="'产品型号:'+tab.materialSpeDesc" :extra="'手术类别:'+tab.surgeryGrade"
-		 		 :isShadow="isShadow" >
-		 			<text class="content-box-text">第 {{(index1+1)}}条 </br>医院:{{tab.hospitalName}} </br>医生:{{tab.doctor}}</text>
-		 			<block slot="footer">
-		 				<view class="footer-box">
-		 					<!-- 	<view class="" @click.stop="footerClick('喜欢')"><text class="footer-box__item"> 喜欢</text></view>
-		 				<view class="" @click.stop="footerClick('评论')"><text class="footer-box__item"> 评论</text></view>
-		 			 -->
-					 <view class="" @click.stop="onClick(index1)"><text class="footer-box__item"> 修改</text></view>
-					 
-		 					<view class="" @click.stop="footerClick(tab,index1)"><text class="footer-box__item"> 删除</text></view>
-		 				</view>
-		 			</block>
-		 		</uni-card>
-		 
-		 	</block>
-		 </uni-list>
-		<!-- <uni-list>
+	
+		<view style="padding-left:20rpx ;">共有：{{list.length}}条数据</view>
+		<uni-list>
 			<block v-for="(tab,index1) in list" :key="index1">
-				<uni-card :title="'手术日期:'+tab.operateDate"   :isShadow="isShadow" :extra="'手术类别:'+tab.surgeryGrade"
-				 @click="onClick(index1)">
-				 <text class="content-box-text"> 第 {{(index1+1)}}条 医院:{{tab.hospitalName}} 医生:{{tab.doctor}}
-				 </text>
-				 <block slot="footer"> 
-				 	<view class="footer-box">
-				 		<view class="" @click.stop="footerClick(tab,index1)"><text class="footer-box__item"> 删除</text></view>
-				 	</view>
-				 </block>
-				 </uni-card>
+				<uni-card :title="'手术日期:'+tab.operateDate" :note="'填报时间:'+tab.createDate" :isShadow="isShadow" :extra="'手术类别:'+tab.surgeryGrade">
+					<text class="content-box-text"> 第 {{(index1+1)}}条 </br> 医院:{{tab.hospitalName}}</br> 医生:{{tab.doctorName}}</text>
+					<block slot="footer" >
+						<view class="footer-box"  >
+							<view class="" @click.stop="onClick(tab)"><text class="footer-box__item"> 修改</text></view>
+							<view class="" @click.stop="footerClick(tab,index1)"><text class="footer-box__item"> 删除</text></view>
+						</view>
+					</block>
+				</uni-card>
 
 			</block>
-		</uni-list> -->
-		 
+		</uni-list>
+		<!-- <uni-fab ref="fab" :pattern="pattern" :content="content" horizontal="right" vertical="bottom" direction="vertical"
+		 @trigger="trigger" /> -->
 
 	</view>
 </template>
 <script>
+	function getDate(type) {
+		var date = new Date();
+		if (type === 'start') {
+			var curTime = new Date().getTime();
+			var startDate = curTime - (7 * 3600 * 24 * 1000);
+			date = new Date(startDate);
+		}
+		let year = date.getFullYear();
+		let month = date.getMonth() + 1;
+		let day = date.getDate();
+		month = month > 9 ? month : '0' + month;;
+		day = day > 9 ? day : '0' + day;
+		return `${year}-${month}-${day}`;
+	}
+	function getDate2(type) {
+	           const date = new Date();
+	           let year = date.getFullYear();
+	           let month = date.getMonth() + 1;
+	           let day = date.getDate();
+				
+	           if (type === 'start') {
+	               year = year - 20;
+	           } 
+	           month = month > 9 ? month : '0' + month;;
+	           day = day > 9 ? day : '0' + day;
+	           return `${year}-${month}-${day}`;
+	       } 
+
+	import uniCard from '@/components/uni-card/uni-card.vue'
+
 	import service from '../../service.js';
-	 
+	import mInput from '../../components/m-input.vue';
 	import {
 		mapState
 	} from 'vuex'
-	
+
 	export default {
 		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
-		 
+		components: {
+			uniCard,
+			
+			mInput
+		},
 		data() {
-			 
+
 			return {
-				 
-				isShadow:true,
+				startDate: getDate2('start'),
+				endDate: getDate2('end'),
+				beginOperateDate: getDate('start'),
+				
+				endOperateDate: getDate({
+					format: true
+				}),
+				hospitalName: '',
+				isShadow: true,
+				doctorName: '',
+				surgeryId: '',
+				array: [{
+					"id": "",
+					"isNewRecord": false,
+					"base": {
+						"id": "",
+						"isNewRecord": false,
+						"baseTypeName": ""
+					},
+					"paramCode": " ",
+					"paramName": "全部",
+					"status": "",
+					"seqno": ""
+				}],
+				index: 0,
 				pattern: {
 					color: '#7A7E83',
 					backgroundColor: '#fff',
 					selectedColor: '#007AFF',
 					buttonColor: '#007AFF'
 				},
-				list: [] 
-				 
+				list: []
+				
 			}
 		},
 		onShow() {
-			if ( this.hasLogin) {
+			if (this.hasLogin) {
 				this.getData();
-				}
+			}
 		},
 		onLoad() {
 			if (!this.hasLogin) {
@@ -77,33 +116,134 @@
 					showCancel: false,
 					success: (res) => {
 						if (res.confirm) {
-								uni.reLaunch({
-									url: '../login/login'
-								});
-							 
+							uni.reLaunch({
+								url: '../login/login'
+							});
+
 						}
 					}
 				});
-			}
-			else{
-			this.getData();
+			} else {
+				this.queryBaseData();
+
 			}
 		},
+		 
 		onPullDownRefresh() {
-			console.log('refresh'); 
-			 
+			console.log('refresh');
+
 			this.getData();
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
 		methods: {
-			  
-			getData() {
-				this.list=service.getbaotai();
-				 
+			
+			bindPickerChange: function(e) {
+				console.log(this.array[e.target.value].id + 'picker发送选择改变，携带值为', e.target.value)
+				this.index = e.target.value;
+				this.surgeryId = this.array[e.target.value].id;
 			},
-			footerClick(tab,index) {
+
+			bindbeginDateChange: function(e) {
+				this.beginOperateDate = e.target.value
+			},
+			bindendDateChange: function(e) {
+				this.endOperateDate = e.target.value
+			},
+			queryBaseData() {
+
+				let data = {
+					type: '手术类别',
+				}
+
+				var _this = this;
+				uni.request({
+					url: service.queryBaseData(),
+					data: data,
+					success: (data) => {
+
+						if (data.statusCode == 200 && data.data.code == 0) {
+							_this.array = _this.array.concat(data.data.data['手术类别'][0].basedataList);
+
+						}
+
+					},
+					fail: (data, code) => {
+						console.log('fail' + JSON.stringify(data));
+
+					}
+				})
+			},
+			exportData() {
+
+
+				let user = service.getUsers();
+				let data = "?userId=" + user.id + "&beginOperateDate=" + this.beginOperateDate + "&endOperateDate=" + this.endOperateDate +
+					"&doctorName=" + this.doctorName + "&hospitalName=" + this.hospitalName + "&surgeryId=" + this.surgeryId
+
+
+				var _this = this;
+				uni.showLoading({
+					title: '加载中...'
+				});
+				uni.downloadFile({
+					url: service.exportListReportStandbook() + data,
+					success: function(res) {
+						if (res.statusCode === 200) {
+							
+							console.log('下载成功');
+							var filePath = res.tempFilePath;
+							uni.showToast({
+								title: '下载路径为'+filePath
+							})
+							uni.openDocument({
+								filePath: filePath,
+								success: function(res) {
+									uni.hideLoading();
+									console.log(filePath + '打开文档成功');
+								},
+
+							});
+						}
+					}
+				});
+
+			},
+			getData() {
+				this.list = [];
+				uni.showLoading({
+					title: '加载中...'
+				});
+				let user = service.getUsers();
+				let data = {
+					userId: user.id
+					
+				}
+
+				var _this = this;
+				uni.request({
+					url: service.queryListReportDStandbook(),
+					data: data,
+					success: (data) => {
+						uni.hideLoading();
+						if (data.statusCode == 200 && data.data.code == 0) {
+							if (data.data.data) {
+								_this.list = data.data.data;
+							}
+						} else {
+							uni.showToast({
+								title: data.data.msg
+							})
+						}
+
+					},
+					fail: (data, code) => {
+						console.log('fail' + JSON.stringify(data));
+						uni.hideLoading();
+					}
+				})
+			},footerClick(tab,index) {
 				var _this=this;
 				console.log("index"+index); 
 				 uni.showModal({
@@ -111,23 +251,48 @@
 				 	content: '确定要删除第'+(index+1)+'条吗？',
 				 	success: (res) => {
 				 		if (res.confirm) {
-							var d= service.getbaotai();
-							debugger;
-				 			 d.splice(index,1);
-							 service.updatebaotai(d);
-							 _this.getData();
+							uni.showLoading({
+								title: '删除中...'
+							});
+							uni.request({
+								url: service.delReportDStandbook(),
+								data: {id:tab.id},
+								success: (data) => {
+									uni.hideLoading();
+									if (data.statusCode == 200 && data.data.code == 0) {
+										uni.showToast({
+											title: '操作成功',
+											duration: 3000,
+											success() {
+												 _this.getData();
+											}
+										})
+									} else {
+										uni.showToast({
+											title: data.data.msg
+										})
+									}
+										
+								},
+								fail: (data, code) => {
+									console.log('fail' + JSON.stringify(data));
+									uni.hideLoading();
+								}
+							})
+							 
+							
 				 		}
 				 	}
 				 			
 				 })
 			},
-			onClick(j) {
+			onClick(tab) {
+				console.log(tab.id);
 				uni.navigateTo({
-					url:"update?index="+j
+					url: "update?id=" + tab.id
 				})
-			},
-			 
- 
+			}
+			
 		}
 	}
 </script>
@@ -142,30 +307,6 @@
 
 	/* #endif */
 
-	.content-box {
-		padding-top: 20rpx;
-	}
-	
-	.content-box-text {
-		font-size: 14px;
-		line-height: 20px;
-	}
-	
-	.footer-box {
-		/* #ifndef APP-NVUE */
-		display: flex;
-		/* #endif */
-		justify-content: space-between;
-		flex-direction: row;
-	
-	}
-	
-	.footer-box__item {
-		align-items: center;
-		padding: 10rpx 0;
-		font-size: 30rpx;
-		color: #666;
-	}
 	.tabs {
 		flex: 1;
 		flex-direction: column;
@@ -309,7 +450,4 @@
 		width: 100px;
 		padding-left: 15px;
 	}
-	.footer-box__item{
-		font-size: 16px;
-		}
 </style>

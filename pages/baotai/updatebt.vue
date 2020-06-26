@@ -37,7 +37,7 @@
 
 			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">患者年龄：</text>
-				<m-input type="text" class="pickertext" clearable v-model="name" placeholder="请输入年龄"></m-input>
+				<m-input type="number" class="pickertext" clearable v-model="name" placeholder="请输入年龄"></m-input>
 			</view>
 			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">患者性别：</text>
@@ -933,10 +933,10 @@ if (this.products.length == 0) {
 					success: (data) => { 
 						uni.hideLoading();
 						if (data.statusCode == 200 && data.data.code == 0) {
-						
+						/* 
 							var d=service.getbaotai();
 							d.splice(_this.dindex, 1);
-							service.updatebaotai(d);
+							service.updatebaotai(d); */
 							
 							  uni.showModal({
 							      title: '操作成功',

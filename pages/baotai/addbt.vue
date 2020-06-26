@@ -37,7 +37,7 @@
 
 			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">患者年龄：</text>
-				<m-input type="text" class="pickertext" clearable v-model="name" placeholder="请输入年龄"></m-input>
+				<m-input type="number" class="pickertext" clearable v-model="name" placeholder="请输入年龄"></m-input>
 			</view>
 			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">患者性别：</text>
@@ -696,42 +696,98 @@
 				} 
 				 
 			 
-				const datas = {
-					index:this.index,
-					suggest:this.suggest,
-					doctor:this.doctor,
-					sex:this.sex,
-					sexindex: this.sexindex,
-					name:this.name,
-					doctors:this.doctors,
-					/* provice: this.provice,
-					city: this.city, */
-					hosptail:this.hosptail,
-					degree:this.degree,
-					surgeryId:this.surgeryId,
-					surgeryGrade:this.surgeryGrade,
-					operateDate:this.operateDate,
-					hospitalName:this.hospitalName,
-					provicesname:this.provicesname,
-					 phos:this.phos,
-					 products:this.products,
-					 grades:this.grades,
-					 
-				}
-				service.addbaotai(datas);
+				
+				let  user=service.getUsers();
 				 
-				uni.showModal({
-				    title: '操作成功',
-				    content: '保存待提交成功',
-					showCancel:false,
-				    success: function (res) {
-				        if (res.confirm) {
-				            uni.navigateBack({
-				            	delta: 1
-				            })
-				        }  
-				    }
+					 
+				 
+				var _data=""; 
+				_data="?userId="+user.id;
+				_data=_data+"&userName="+user.name;
+				_data=_data+"&degree="+this.degree;
+				var _provinceName=this.provicesname.split("-");
+				/* _data=_data+"&provinceCode="+this.provice;
+				_data=_data+"&cityCode="+this.city; */
+				_data=_data+"&provinceName="+_provinceName[0];
+				_data=_data+"&cityName="+_provinceName[1];
+				_data=_data+"&surgeryId="+this.surgeryId;
+				_data=_data+"&suggest="+this.suggest;
+				 _data=_data+"&doctorName="+this.doctor;
+				 _data=_data+"&patientSex="+this.sex;
+				 _data=_data+"&patientAge="+this.name;
+				 _data=_data+"&operateDate="+this.operateDate;
+				 _data=_data+"&hospitalName="+this.hospitalName;
+				 _data=_data+"&type="+user.createType;
+				 this.grades.forEach((item,index)=>{
+					 if(item.grade){
+						 _data=_data+"&reportDStandbookGradeDetailList["+index+"].grade="+item.grade;
+						 _data=_data+"&reportDStandbookGradeDetailList["+index+"].gradeId="+item.gradeId;
+					 }else{
+						 _data=_data+"&reportDStandbookGradeDetailList["+index+"].grade=0";
+						 _data=_data+"&reportDStandbookGradeDetailList["+index+"].gradeId="+item.id;
+					 }
+					 
 				});
+				this.phos.forEach((item,index)=>{
+									  _data=_data+"&reportDStandbookImageDetailList["+index+"].reportImgUrl="+item;
+					});
+					var unitCount=0;
+					this.products.forEach((item,index)=>{
+						 unitCount=unitCount+item.isRecordUnit;
+							       _data=_data+"&reportDStandbookProductDetailList["+index+"].productId="+item.id; 
+								 _data=_data+"&reportDStandbookProductDetailList["+index+"].isRecordUnit="+item.isRecordUnit;
+								 _data=_data+"&reportDStandbookProductDetailList["+index+"].isVerifyIndividualcode="+item.isVerifyIndividualcode;
+								 _data=_data+"&reportDStandbookProductDetailList["+index+"].scanCode="+item.scanCode;
+								  _data=_data+"&reportDStandbookProductDetailList["+index+"].individualcode="+item.indivualcode;
+								  _data=_data+"&reportDStandbookProductDetailList["+index+"].produceDate="+item.produceDate;
+								  _data=_data+"&reportDStandbookProductDetailList["+index+"].outdate="+item.outdate;
+							  });
+						 _data=_data+"&unitCount="+unitCount;
+				console.log(_data);
+				uni.showLoading({
+					title: '提交中...'
+				});
+				  uni.request({
+					url: service.saveReportDStandbook()+encodeURI(_data),
+					method:"POST",
+					 header: {
+					        'content-type':"application/x-www-form-urlencoded"
+					    },
+					success: (data) => { 
+						uni.hideLoading();
+						if (data.statusCode == 200 && data.data.code == 0) {
+							 uni.showModal({
+							     title: '操作成功',
+							     content: '操作成功',
+							 	showCancel:false,
+							     success: function (res) {
+							         if (res.confirm) {
+							             uni.navigateBack({
+							             	delta: 1
+							             })
+							         }  
+							     }
+							 });
+						}
+						else{
+							uni.showModal({
+							    title: '操作失败',
+							    content: data.data.msg,
+								showCancel:false,
+							    success: function (res) {
+							        if (res.confirm) {
+							            
+							        }  
+							    }
+							});
+						}
+						
+					},
+					fail: (data, code) => {
+						console.log('fail' + JSON.stringify(data));
+						uni.hideLoading();
+					}
+				}) 
 				
 				
 				},

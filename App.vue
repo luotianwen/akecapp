@@ -184,4 +184,20 @@
 	button.back {
 		background-color: #a69e9a;
 	}
+	
+	.footer-box {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		justify-content: space-between;
+		flex-direction: row;
+	
+	}
+	
+	.footer-box__item {
+		align-items: center;
+		padding: 10rpx 0;
+		font-size: 30rpx;
+		color: #666;
+	}
 </style>
