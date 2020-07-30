@@ -8,12 +8,7 @@
 					<view class="pickertext">{{operateDate}}</view>
 				</picker>
 			</view>
-			<!-- <view class="input-row border">
-				<text class="title" @tap="handleTap('picker2')">选择省市：</text>
-				<view @tap="handleTap('picker2')"  class="pickerslect">{{provicesname}}</view>
-				<lb-picker ref="picker2" v-model="provicesvalue" mode="multiSelector" :list="provices" :level="2" @confirm="handleConfirm">
-				</lb-picker>
-			</view> -->
+			
 			<view class="input-row border" style="padding-top: 15rpx;">
 				<text class="title">选择医院：</text>
 				<selectsearch style="padding: 5px 0 0 0;" @handleSearch="handleSearch" @change="change" placeholder="请搜索医院"
