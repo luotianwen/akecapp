@@ -2,8 +2,8 @@
     "name" : "小李跟刀APP",
     "appid" : "__UNI__D3BBC05",
     "description" : "小李跟刀APP",
-    "versionName" : "3.0.8",
-    "versionCode" : 13,
+    "versionName" : "3.0.9",
+    "versionCode" : 15,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -15,6 +15,9 @@
                 "buttonAccept" : "我知道了",
                 "buttonRefuse" : "暂不同意"
             }
+        },
+        "compatible" : {
+            "ignoreVersion" : true
         },
         "usingComponents" : true,
         "compilerVersion" : 3,
@@ -42,9 +45,9 @@
             /* ios打包配置 */
             "ios" : {
                 "privacyDescription" : {
-                    "NSPhotoLibraryUsageDescription" : "读取照片",
-                    "NSPhotoLibraryAddUsageDescription" : "拍照",
-                    "NSCameraUsageDescription" : "拍照"
+                    "NSPhotoLibraryUsageDescription" : "读取用户相册主要用于识别产品二维码",
+                    "NSPhotoLibraryAddUsageDescription" : "写取用户相册主要用于产品二维码功能时保存图片素",
+                    "NSCameraUsageDescription" : "扫描产品二维码识别二维码"
                 },
                 "idfa" : false
             },
