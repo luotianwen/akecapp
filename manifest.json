@@ -2,8 +2,8 @@
     "name" : "小李跟刀APP",
     "appid" : "__UNI__D3BBC05",
     "description" : "小李跟刀APP",
-    "versionName" : "3.0.9",
-    "versionCode" : 15,
+    "versionName" : "3.0.10",
+    "versionCode" : 16,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {

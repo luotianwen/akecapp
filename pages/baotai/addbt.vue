@@ -364,15 +364,14 @@
 			add() {
 				this.$refs.popup.open();
 			},
-			scan() {
-				var _this = this;
+			scan() {				 
+				var _this = this;				 
 				// 调起条码扫描
-				uni.scanCode({
-					
+				uni.scanCode({					
 					success: function(res) {
 						console.log('条码类型：' + res.scanType);
 						console.log('条码内容：' + res.result);
-						_this.barCode = res.result;
+						_this.barCode = res.result.replace(//g,'');
 						_this.queryResultProductInfo(1)
 					}
 				});
