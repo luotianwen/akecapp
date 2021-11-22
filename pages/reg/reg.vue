@@ -55,23 +55,50 @@
 				qpassword: '',
 				createType: '101',
 				registerDealerName: '',
-				array: [{
-					name: '直属销售员',
-					id: '101'
-				}, {
-					name: '医生',
-					id: '100'
-				}, {
-					name: '经销商',
-					id: '102'
-				}, {
-					name: '子公司销售员',
-					id: '104'
-				}],
+				array: [],
 				index: 0,
 			}
 		},
+		onLoad: function(data) {
+		
+			this.queryBaseData();
+			 
+		},
 		methods: {
+			queryBaseData() {
+			
+				let data = {
+					type: '业务员类型',
+				}
+			
+				var _this = this;
+				uni.request({
+					url: service.queryBaseData(),
+					data: data,
+					success: (data) => {
+			
+						if (data.statusCode == 200 && data.data.code == 0) {
+			
+							var a  = (data.data.data['业务员类型'][0].basedataList);
+							
+							a.forEach(function(item){
+								if(item.paramCode!='103')
+								_this.array.push({
+									name: item.paramName,
+									id: item.paramCode
+								})
+							});
+							
+							  
+						}
+			
+					},
+					fail: (data, code) => {
+						console.log('fail' + JSON.stringify(data));
+			
+					}
+				})
+			},
 			bindPickerChange: function(e) {
 				console.log(this.array[e.target.value].id + 'picker发送选择改变，携带值为', e.target.value)
 				this.index = e.target.value;
